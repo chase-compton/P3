@@ -33,6 +33,7 @@ public:
 
     CircularDynamicArray(const CircularDynamicArray &rhs)
     {
+        cout << "Copy Constructor" << endl;
         size = rhs.size;
         cap = rhs.cap;
         array = new type[cap];
@@ -45,6 +46,7 @@ public:
 
     CircularDynamicArray &operator=(const CircularDynamicArray &rhs)
     {
+        cout << "Copy Assignment" << endl;
         size = rhs.size;
         cap = rhs.cap;
         type *tempArray = new type[cap];
@@ -193,6 +195,7 @@ public:
             tempArray[i] = *(array + ((front + i) % cap));
         }
         return WCkthSmallest(tempArray, 0, size - 1, k);
+        // return QSkthSmallest(0, size - 1, k);
     }
 
     type QSkthSmallest(int l, int r, int k)
@@ -407,5 +410,14 @@ public:
             }
         }
         return -1;
+    }
+
+    void printArray()
+    {
+        for (int i = 0; i < size; i++)
+        {
+            cout << *(array + ((front + i) % cap)) << " ";
+        }
+        cout << endl;
     }
 };
