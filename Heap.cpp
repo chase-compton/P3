@@ -1,7 +1,6 @@
 #include <cstdlib>
 #include <algorithm>
 #include <iostream>
-#include "CircularDynamicArray.cpp"
 
 using namespace std;
 
@@ -50,14 +49,12 @@ public:
 
     Heap(const Heap &rhs)
     {
-        cout << "Copy Constructor" << endl;
         heapArray = new CircularDynamicArray<type>();
         *heapArray = *rhs.heapArray;
     }
 
     Heap &operator=(const Heap &rhs)
     {
-        cout << "Copy Assignment" << endl;
         *heapArray = *rhs.heapArray;
         return *this;
     }
