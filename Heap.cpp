@@ -11,11 +11,12 @@ protected:
     CircularDynamicArray<type> *heapArray;
 
 public:
+    //Default Constructor
     Heap()
     {
         heapArray = new CircularDynamicArray<type>();
     }
-
+    //Array with bottom up heap construction
     Heap(type k[], int s)
     {
         heapArray = new CircularDynamicArray<type>(s);
@@ -28,16 +29,18 @@ public:
             Heapify(i);
         }
     }
-
+    // Bottom Up method in order to verify/restore heap order. Used in the array constructor
     void Heapify(int i)
     {
         int l = left(i);
         int r = right(i);
         int smallest = i;
+        //checks for a child being smaller than parent (violation of heap order)
         if (l < heapArray->length() && (*heapArray)[l] < (*heapArray)[i])
             smallest = l;
         if (r < heapArray->length() && (*heapArray)[r] < (*heapArray)[smallest])
             smallest = r;
+        //swpas if new smallest is found
         if (smallest != i)
         {
             type temp = (*heapArray)[i];
@@ -46,29 +49,29 @@ public:
             Heapify(smallest);
         }
     }
-
+    //Copy constructor
     Heap(const Heap &rhs)
     {
         heapArray = new CircularDynamicArray<type>();
         *heapArray = *rhs.heapArray;
     }
-
+    //Assignment Op
     Heap &operator=(const Heap &rhs)
     {
         *heapArray = *rhs.heapArray;
         return *this;
     }
-
+    //Destructor
     ~Heap()
     {
         delete heapArray;
     }
-
+    //returns min value without extraction
     type peekKey()
     {
         return (*heapArray)[0];
     }
-
+    //returns and extracts the min 
     type extractMin()
     {
         type root = (*heapArray)[0];
@@ -85,7 +88,8 @@ public:
 
         return root;
     }
-
+    //insertion function
+    //adds to end and node swims up if needed
     void insert(type k)
     {
         heapArray->addEnd(k);
@@ -98,12 +102,12 @@ public:
             i = parent(i);
         }
     }
-
+    //print function for heap
     void printKey()
     {
         heapArray->printArray();
     }   
-
+    //helper function to locate relations easier
     int parent(int i)
     {
         return (i - 1) / 2;

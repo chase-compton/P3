@@ -5,6 +5,7 @@
 
 using namespace std;
 
+//FibHeapNode Class
 template <class type>
 class FibHeapNode
 {
@@ -19,7 +20,7 @@ public:
 
     int degree;
     bool mark;
-
+    //Default Constructor
     FibHeapNode()
     {
         key = NULL;
@@ -33,7 +34,7 @@ public:
         degree = 0;
         mark = false;
     }
-
+    //Key Constructor
     FibHeapNode(type k)
     {
         key = k;
@@ -48,7 +49,7 @@ public:
         mark = false;
     }
 };
-
+//FibHeap Class
 template <class type>
 class FibHeap
 {
@@ -60,6 +61,7 @@ protected:
     int rootListSize;
 
 public:
+    //Default Constructor
     FibHeap()
     {
         min = NULL;
@@ -68,7 +70,7 @@ public:
         numNodes = 0;
         rootListSize = 0;
     }
-
+    //Array Contructor with handles added
     FibHeap(type k[], int s, CircularDynamicArray<FibHeapNode<type> *> &handle)
     {
         min = NULL;
@@ -82,12 +84,12 @@ public:
         }
         consolidate();
     }
-
+    //returns min value without extraction
     type peekKey()
     {
         return min->key;
     }
-
+    //FibHeap Insert which adds to root list and procrastinates consolidation
     FibHeapNode<type> *insert(type k)
     {
         FibHeapNode<type> *x = new FibHeapNode<type>(k);
@@ -118,7 +120,7 @@ public:
 
         return x;
     }
-
+    //useful when wanting to insert an exsisting node into the root list
     void insertNode(FibHeapNode<type> *x)
     {
         if (x == NULL)
@@ -147,12 +149,13 @@ public:
         }
         rootListSize += 1;
     }
-
+    //extracts min node, consolidates, and returns min value
     type extractMin()
     {
         FibHeapNode<type> *z = min;
         if (z)
-        {
+        {   
+            //if min has children we add them to the root list
             if (z->child)
             {
                 FibHeapNode<type> *cur = z->child;
@@ -171,6 +174,7 @@ public:
                     rootListSize += 1;
                 } while (cur != first);
             }
+            //special cases if the head or tail is also the min
             if (z == head)
             {   head = z->right;
                 tail->right = head;
@@ -180,9 +184,11 @@ public:
                 tail = z->left;
                 head->left = tail;
             }
+            //removing z from the root list
             z->right->left = z->left;
             z->left->right = z->right;
             rootListSize -= 1;
+            //if min was only node we can not worry about consolidation  
             if (z == z->right)
             {
                 min = NULL;
@@ -201,18 +207,21 @@ public:
 
     bool decreaseKey(FibHeapNode<type> *h, type k)
     {
+        //if new key is greater then we arent decreasing so return false and do nothing
         if (k > h->key)
         {
             return false;
         }
-
+        //set key
         h->key = k;
         FibHeapNode<type> *y = h->parent;
+        //complete cuts as described in the text book as needed
         if (y != NULL && h->key < y->key)
         {
             cut(h,y);
             cascadingCut(y);
         }
+        //reset min if needed
         if (h->key < min->key)
         {
             min = h;
@@ -222,18 +231,26 @@ public:
 
     void cut(FibHeapNode<type> *x, FibHeapNode<type> *y)
     {
+        //cut function as described in book
+
+        //resets parents child
         if(y->child == x)
             if(x == x->right)
                 y->child = NULL;
             else
                 y->child = x->right;
+        //fixes child list of parent
         x->right->left = x->left;
         x->left->right = x->right;
+
+        //adding to root list
         tail->right = x;
         x->left = tail;
         x->right = head;
         tail = x;
         head->left = tail;
+
+        //additional fixes
         x->parent = NULL;
         x->mark = false;
         y->degree -= 1;
@@ -242,6 +259,7 @@ public:
 
     void cascadingCut(FibHeapNode<type> *y)
     {
+        //function to continue cutting if parent already marked
         FibHeapNode<type> *z = y->parent;
         if (z != NULL)
         {
@@ -259,6 +277,7 @@ public:
 
     void merge(FibHeap<type> &H2)
     {
+        //merges H2 into H1
         tail->right = H2.head;
         H2.head->left = tail;
         tail = H2.tail;
@@ -281,12 +300,15 @@ public:
 
     void consolidate()
     {
+        //creates and initializes to NULL an array of pointers in order to consolidate
         int maxDegree = log2(numNodes) + 1;
         FibHeapNode<type> *A[maxDegree];
         for (int i = 0; i < maxDegree; i++)
         {
             A[i] = NULL;
         }
+
+        //going through and looking for same degree nodes to combine
         FibHeapNode<type> *x = head;
         for (int i = 0; i < rootListSize; i++)
         {
@@ -299,6 +321,7 @@ public:
                 {
                     break;
                 }
+                //swap so that root will be the smaller node
                 if (x->key > y->key)
                 {
                     FibHeapNode<type> *temp = x;
@@ -316,6 +339,7 @@ public:
         head = NULL;
         tail = NULL;
         rootListSize = 0;
+        //inserts our combined nodes, all with unique degrees, into the root list
         for (int i = 0; i < maxDegree; i++)
         {
             if (A[i] != NULL)
@@ -324,7 +348,8 @@ public:
             }
         }
     }
-
+    
+    //a function to link a 'tree' to another 'tree' during consolidate
     void fibheapLink(FibHeapNode<type> *y, FibHeapNode<type> *x)
     {
         y->left->right = y->right;
@@ -348,10 +373,14 @@ public:
             x->child = y;
         }
     }
+    
+    //print function
     void printKey()
     {
+        //do nothing if empty
         if (min == NULL)
             return;
+        //for each root in root list we call print helper on its child after printing the root node
         FibHeapNode<type> *cur = head;
         do
         {
@@ -363,7 +392,7 @@ public:
             cout << endl;
         } while (cur != head);
     }
-
+    //hellper function to print a roots tree, follows a preorder type pattern
     void printHelper(FibHeapNode<type> *node)
     {
         if (node == NULL)
