@@ -1,264 +1,60 @@
 #include <iostream>
-#include <fstream>
-#include <cstdlib>
 using namespace std;
 #include "CircularDynamicArray.cpp"
+#include "Heap.cpp"
 
-void test1(ostream &fp);
-void test2(ostream &fp);
-void test3(ostream &fp);
-void test4(ostream &fp);
-void test5(ostream &fp);
-void test6(ostream &fp);
-
-void foo(CircularDynamicArray<int> x) {
-	for (int i=0; i<x.length()/2; i++)
-	for (int i=0; i<x.length()/2; i++){
-		int temp = x[i];
-		x[i] = x[x.length()/2+i];
-	// X => "6 7 8 9 10 15 19 6 7 8 9 10 15 19 11"	
-	for (int i=0; i< x.length();i++) cout << x[i] << " ";  cout << endl;
-		x[x.length()/2+i] = temp;
+void printErrors(string errors, int numOfErrors){
+	if(numOfErrors < 5){
+		cout << errors << " caused less than 5 errors so +1 line" << endl;
 	}
-}
-
-int printWrapper = 0;
-
-int main(int argc, char **argv){
-	int testToRun = atoi(argv[1]);
-	switch (testToRun){
-		case 1:
-			test1(cout);
-			break;
-		case 2:
-			test2(cout);
-			break;
-		case 3:
-			test3(cout);
-			break;
-		case 4:
-			test4(cout);
-			break;
-		case 5:
-			test5(cout);
-			break;
-		case 6:
-			test6(cout);
-			break;
+	if(numOfErrors < 100){
+		cout << errors << " caused less than 100 errors so +1 line" << endl;
+	}
+	if (numOfErrors < 500){
+		cout << errors << " caused less than 500 errors so +1 line" << endl;
+	}
+	if (numOfErrors < 5000){
+		cout << errors << " caused less than 5000 errors so +1 line" << endl;
+	}
+	else{
+		cout << errors << " caused more than 5000 errors resulting in 0 points" << endl;
 	}
 }
 
 int main(){
-	CircularDynamicArray<float> C(10);
-	for (int i=0; i< C.length();i++) C[i] = i;
-	for (int i=0; i< C.length();i++) cout << C[i] << " ";  cout << endl;
-	// C => "0 1 2 3 4 5 6 7 8 9"
-void test1(ostream &fp){
-	if(printWrapper) fp << "Running test 1" << endl;
-	//fp.open("test1.out");
-	CircularDynamicArray<int> C(25);
-	for (int i=0; i< C.length();i++) C[i] = i*10;
-	for (int i=0; i< C.length();i++) fp << C[i] << " "; fp << endl;
-	C.delFront();
-	for (int i=0; i< C.length();i++) cout << C[i] << " ";  cout << endl;
-	// C => "1 2 3 4 5 6 7 8 9"
-	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
-	C.delEnd();
-	for (int i=0; i< C.length();i++) cout << C[i] << " ";  cout << endl;
-	// C => "1 2 3 4 5 6 7 8"
-	C.addEnd(100.0);
-	for (int i=0; i< C.length();i++) cout << C[i] << " ";  cout << endl;
-	// C => "1 2 3 4 5 6 7 8 100"
-	C.delFront();
-	C.addEnd(200.0);
-	// C => "2 3 4 5 6 7 8 100 200"	
+	string A[25] = {"AD","AB","V","AA","A","B","U","C","D","E","W","F","H","I","J","X","K","L","M","O","Q","Y","R","S","T"};
+	
+	Heap<string> T1, T2(A,25);
+	
+	T2.printKey();
+	
+	for(int i=0; i<25; i++) T1.insert(A[i]);
+	
+	T1.printKey();
+	
+	cout << T2.peekKey() << endl;
+	cout << T2.extractMin() << endl;
+	
+	cout << T1.peekKey() << endl;
+	cout << T1.extractMin() << endl;
+	cout << T1.extractMin() << endl;
+	cout << T1.extractMin() << endl;
+	cout << T1.extractMin() << endl;
+	
+	T1.printKey();
 
-	C.addEnd(300.0);
-	C.addEnd(400.0);
-	// C => "2 3 4 5 6 7 8 100 200 300 400"	
-	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
-	C.addEnd(1001);
-	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
-	C.addEnd(1005);
-	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
-	C.delEnd(); C.delEnd();
-	C.addFront(-105); C.addFront(-250);
-	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
-	fp << "Capacity is " << C.capacity() << endl;
-
-	CircularDynamicArray<int> A,B;
-	for(int i=0; i<10;i++) A.addEnd(i);
-	CircularDynamicArray<int> A;
-	int temp = 0;
-	for(int i=0; i<25;i++){
-		A.addEnd(i*10);
-		if(A.capacity() != temp){
-			temp = A.capacity();
-			fp << "Capacity is " << temp << " ";
-		}
+	Heap<int> X;
+	for(int i = 0; i < 100000; i++){
+		X.insert((i-50000));
 	}
-    fp << endl;
-	fp << "Capacity is " << A.capacity() << endl;
-	fp << "Search is " << A.linearSearch(60) << endl;
-	fp << "Select is " << A.QuickSelect(2) << endl;
-	A.stableSort();
-	A.addFront(12); 
-	fp << "Search is " << A.binSearch(60) << endl;
-	fp << "Select is " << A.WCSelect(2) << endl;
-	A.addFront(-12);
-	A.stableSort();
-	fp << "BinSearch is " << A.binSearch(30) << endl;
-	A.delFront(); A.delFront(); A.addEnd(61);
-	for (int i=0; i< A.length();i++) fp << A[i] << " ";  fp << endl;
-	CircularDynamicArray<int> B;
-	B = A;
-	A.addEnd(15); A.addEnd(19);
-	// A => "0 1 2 3 4 5 6 7 8 9 15 19" 
-	cout << "Select is " << A.linearSearch(5) << endl;
-	// A => "0 1 2 3 4 5 6 7 8 9 15 19" Search => 5
-	cout << "Select is " << A.binSearch(12) << endl;
-	// A => "0 1 2 3 4 5 6 7 8 9 15 19" Search => -1
-	cout << "Select is " << A.binSearch(15) << endl;
-	// A => "0 1 2 3 4 5 6 7 8 9 15 19" Search => 10	
-	A.addFront(10); 
-	// A => "10 0 1 2 3 4 5 6 7 8 9 15 19"
-	cout << "Select is " << A.linearSearch(5) << endl;
-	// A => "10 0 1 2 3 4 5 6 7 8 9 15 19" Search => 6
-	cout << "Select is " << A.QuickSelect(3) << endl;
-    // Select => 2	
-	cout << "Select is " << A.WCSelect(12) << endl;
-	// Select => 15
-	A[0] = -1001;
-	fp << B[0] << endl;
-	foo(A);
-	for (int i=0; i< B.length();i++) fp << B[i] << " ";  fp << endl;
-	CircularDynamicArray<long int> testGeneric1(10);
-	CircularDynamicArray<short int> testGeneric2(10);
-	CircularDynamicArray<double> testGeneric3(10);
-	fp << "Passed Generics Test" << endl;
-	//fp.close();
-	if(printWrapper)fp << "-----------------Finished Test----------------------" << endl;
-}
-
-void test2(ostream &fp){
-	if(printWrapper) fp << "Running test 2" << endl;   //testing O(nlgn) sort
-	CircularDynamicArray<int> A;
-	for(int i = 0; i < 500500; i++) A.addFront(i);
-	fp << "Select is " << A.WCSelect(400) << endl;
-	fp << "Select is " << A.WCSelect(4000) << endl;
-	fp << "Select is " << A.WCSelect(40000) << endl;
-	A.stableSort();
-	// A => "0 1 2 3 4 5 6 7 8 9 10 15 19"
-	A.addEnd(11); A.addFront(1); A.addFront(2); A.addFront(3);
-	cout << "capacity is " << A.capacity() << endl;
-	// A => "3 2 1 0 1 2 3 4 5 6 7 8 9 10 15 19 11"	  capacity => 32
-	A.delFront(); A.delFront();
-	// A => "1 0 1 2 3 4 5 6 7 8 9 10 15 19 11"	  capacity => 32
-	fp << "Search is " << A.linearSearch(400) << endl;
-	fp << "Search is " << A.linearSearch(4000) << endl;
-	fp << "Search is " << A.binSearch(40000) << endl;
-	fp << "Select is " << A.QuickSelect(4000) << endl;
-	if(printWrapper) fp << "-----------------Finished Test----------------------" << endl;
-}
-
-void test3(ostream &fp){
-	if(printWrapper) fp << "Running test 3" << endl;   //testing initialization constructor
-	int initCounter = 0;
-	for(int i=1; i<200; i++) {
-		CircularDynamicArray<double> D(500500);
-		for(int j=0; j<500500; j++) D[j] = -10.0;
-		for(int j=1; j<1000; j++) D[i*j] = i*j;
-		for(int j=50*i; j<51*i; j++) 
-			if(D[j] != -10.0 && i % 39 == 0){
-				cout << "D["<<j<<"] is : "<<D[j] << endl;  //should output where D[j] is : j once per value of i
-				initCounter++;
-			} 
+	X.printKey();
+	int peakKey=0;
+	int extractMin=0;
+	for(int i = 0; i < 99999; i++){
+		if(X.peekKey() != (i-50000)) peakKey++;
+		if(X.extractMin() != (i-50000)) extractMin++;
 	}
-	int printNumber = 0;
-	if(initCounter < 6) printNumber = 5;
-	else if(initCounter < 30) printNumber = 4;
-	else if(initCounter < 60) printNumber = 3;
-	else if(initCounter < 100) printNumber = 2;
-	else if(initCounter < 200) printNumber = 1;
-	else if(initCounter < 300) printNumber = 0;
-	for(int i =0; i < printNumber; i++) cout << "This print counts as a line" << endl;
-	CircularDynamicArray<char> E(1000000);
-	for(int i = 0; i < 1000000; i++) E[i] = 'X';
-	E[490000] = 'A';
-	E[500000] = 'B';
-	cout << E.linearSearch('B')<< endl;   //should output 500000
-	if(printWrapper) fp << "-----------------Finished Test----------------------" << endl;
-}
-
-void test4(ostream &fp){
-	if(printWrapper) fp << "Running test 4" << endl;
-	CircularDynamicArray<int> A;
-	for(int i = 0; i < 50000; i++) {A.addFront(i);A.addEnd(100000-i);}
-	fp << "A[24999] is " << A[24999] << endl;
-	fp << "A[25000] is " << A[25000] << endl;	
-	for(int i = 0; i < 25000; i++) {A.delFront();A.delEnd();}	
-	fp << "A[12499] is " << A[12499] << endl;
-	fp << "A[12500] is " << A[12500] << endl;
-	fp << "Search is " << A.linearSearch(400) << endl;
-	fp << "Select is " << A.WCSelect(4000) << endl;
-	A.stableSort();
-	fp << "BinSearch is " << A.binSearch(4000) << endl;
-	fp << "BinSearch is " << A.binSearch(50000) << endl;	  //looking for a value not in the array	
-	if(printWrapper) fp << "-----------------Finished Test----------------------" << endl;
-}
-
-
-void test5(ostream &fp){
-	if(printWrapper) fp << "Running test 5" << endl;	
-	CircularDynamicArray<int> A;
-	for(int i = 0; i < 1000000; i++) 
-	{
-		A.addEnd(i);
-	}
-	for(int i = 0; i < 23000; i++) 
-	{
-		int value = A.binSearch(i);
-		if(i % 3500 == 0) fp << "binSearch at " << i << " is " << value << endl;
-	}
-	if(printWrapper) fp << "-----------------Finished Test----------------------" << endl;
-}
-
-
-void test6(ostream &fp){
-	if(printWrapper) fp << "Running test 6" << endl;
-	CircularDynamicArray<int> A;
-	for(int i = 0; i < 500000; i++) 
-	{
-		A.addFront(i);
-	}
-	A.stableSort();
-	for(int i = 0; i < 40; i++) 
-	{
-		int value = A.binSearch(i);
-		if(i % 10 == 0) fp << "Search at " << i << " is " << value << endl;
-	}
-	for(int i = 40; i < 50; i++) 
-	{
-		int value = A.linearSearch(i);
-		if(i % 10 == 0) fp << "Search at " << i << " is " << value << endl;
-	}
-	for(int i = 1; i < 5; i++) 
-	{
-		int value = A.WCSelect(i);
-		fp << "Select at " << i << " is " << value << endl;
-	}
-	for(int i = 49900; i < 49905; i++) 
-	{
-		int value = A.QuickSelect(i);
-		fp << "Select at " << i << " is " << value << endl;
-	}
-	if(printWrapper) fp << "-----------------Finished Test----------------------" << endl;
-}
-
-
-	foo(A);
-	for (int i=0; i< A.length();i++) cout << A[i] << " ";  cout << endl;
-	// A => "1 0 1 2 3 4 5 6 7 8 9 10 15 19 11"
-	for (int i=0; i< B.length();i++) cout << B[i] << " ";  cout << endl;
-	// B => "0 1 2 3 4 5 6 7 8 9"
+	printErrors("peakKey",peakKey);
+	printErrors("extractMin",extractMin);
+	return 0;
 }

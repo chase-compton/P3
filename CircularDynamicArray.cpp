@@ -86,10 +86,10 @@ public:
             {
                 newArray[i] = *(array + ((front + i) % (cap / 2)));
             }
-            for (int j = size; j < cap; j++)
-            {
-                newArray[j] = 0;
-            }
+            // for (int j = size; j < cap; j++)
+            // {
+            //     newArray[j] = NULL;
+            // }
             delete[] array;
             array = newArray;
             front = 0;
@@ -109,10 +109,10 @@ public:
             {
                 newArray[i] = *(array + ((front + i) % (cap / 2)));
             }
-            for (int j = size; j < cap; j++)
-            {
-                newArray[j] = 0;
-            }
+            // for (int j = size; j < cap; j++)
+            // {
+            //     newArray[j] = NULL;
+            // }
             delete[] array;
             array = newArray;
             front = 0;
@@ -135,10 +135,10 @@ public:
             {
                 newArray[i] = *(array + ((front + i) % (cap * 2)));
             }
-            for (int j = size; j < cap; j++)
-            {
-                newArray[j] = 0;
-            }
+            // for (int j = size; j < cap; j++)
+            // {
+            //     newArray[j] = NULL;
+            // }
             delete[] array;
             array = newArray;
             front = 0;
@@ -159,10 +159,10 @@ public:
             {
                 newArray[i] = *(array + ((front + i) % (cap * 2)));
             }
-            for (int j = size; j < cap; j++)
-            {
-                newArray[j] = 0;
-            }
+            // for (int j = size; j < cap; j++)
+            // {
+            //     newArray[j] = NULL;
+            // }
             delete[] array;
             array = newArray;
             front = 0;
