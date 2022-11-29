@@ -12,12 +12,9 @@ void test5(ostream &fp);
 void test6(ostream &fp);
 
 void foo(CircularDynamicArray<int> x) {
-	for (int i=0; i<x.length()/2; i++)
 	for (int i=0; i<x.length()/2; i++){
 		int temp = x[i];
 		x[i] = x[x.length()/2+i];
-	// X => "6 7 8 9 10 15 19 6 7 8 9 10 15 19 11"	
-	for (int i=0; i< x.length();i++) cout << x[i] << " ";  cout << endl;
 		x[x.length()/2+i] = temp;
 	}
 }
@@ -48,11 +45,6 @@ int main(int argc, char **argv){
 	}
 }
 
-int main(){
-	CircularDynamicArray<float> C(10);
-	for (int i=0; i< C.length();i++) C[i] = i;
-	for (int i=0; i< C.length();i++) cout << C[i] << " ";  cout << endl;
-	// C => "0 1 2 3 4 5 6 7 8 9"
 void test1(ostream &fp){
 	if(printWrapper) fp << "Running test 1" << endl;
 	//fp.open("test1.out");
@@ -60,22 +52,8 @@ void test1(ostream &fp){
 	for (int i=0; i< C.length();i++) C[i] = i*10;
 	for (int i=0; i< C.length();i++) fp << C[i] << " "; fp << endl;
 	C.delFront();
-	for (int i=0; i< C.length();i++) cout << C[i] << " ";  cout << endl;
-	// C => "1 2 3 4 5 6 7 8 9"
 	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
 	C.delEnd();
-	for (int i=0; i< C.length();i++) cout << C[i] << " ";  cout << endl;
-	// C => "1 2 3 4 5 6 7 8"
-	C.addEnd(100.0);
-	for (int i=0; i< C.length();i++) cout << C[i] << " ";  cout << endl;
-	// C => "1 2 3 4 5 6 7 8 100"
-	C.delFront();
-	C.addEnd(200.0);
-	// C => "2 3 4 5 6 7 8 100 200"	
-
-	C.addEnd(300.0);
-	C.addEnd(400.0);
-	// C => "2 3 4 5 6 7 8 100 200 300 400"	
 	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
 	C.addEnd(1001);
 	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
@@ -86,8 +64,6 @@ void test1(ostream &fp){
 	for (int i=0; i< C.length();i++) fp << C[i] << " ";  fp << endl;
 	fp << "Capacity is " << C.capacity() << endl;
 
-	CircularDynamicArray<int> A,B;
-	for(int i=0; i<10;i++) A.addEnd(i);
 	CircularDynamicArray<int> A;
 	int temp = 0;
 	for(int i=0; i<25;i++){
@@ -112,22 +88,6 @@ void test1(ostream &fp){
 	for (int i=0; i< A.length();i++) fp << A[i] << " ";  fp << endl;
 	CircularDynamicArray<int> B;
 	B = A;
-	A.addEnd(15); A.addEnd(19);
-	// A => "0 1 2 3 4 5 6 7 8 9 15 19" 
-	cout << "Select is " << A.linearSearch(5) << endl;
-	// A => "0 1 2 3 4 5 6 7 8 9 15 19" Search => 5
-	cout << "Select is " << A.binSearch(12) << endl;
-	// A => "0 1 2 3 4 5 6 7 8 9 15 19" Search => -1
-	cout << "Select is " << A.binSearch(15) << endl;
-	// A => "0 1 2 3 4 5 6 7 8 9 15 19" Search => 10	
-	A.addFront(10); 
-	// A => "10 0 1 2 3 4 5 6 7 8 9 15 19"
-	cout << "Select is " << A.linearSearch(5) << endl;
-	// A => "10 0 1 2 3 4 5 6 7 8 9 15 19" Search => 6
-	cout << "Select is " << A.QuickSelect(3) << endl;
-    // Select => 2	
-	cout << "Select is " << A.WCSelect(12) << endl;
-	// Select => 15
 	A[0] = -1001;
 	fp << B[0] << endl;
 	foo(A);
@@ -148,12 +108,6 @@ void test2(ostream &fp){
 	fp << "Select is " << A.WCSelect(4000) << endl;
 	fp << "Select is " << A.WCSelect(40000) << endl;
 	A.stableSort();
-	// A => "0 1 2 3 4 5 6 7 8 9 10 15 19"
-	A.addEnd(11); A.addFront(1); A.addFront(2); A.addFront(3);
-	cout << "capacity is " << A.capacity() << endl;
-	// A => "3 2 1 0 1 2 3 4 5 6 7 8 9 10 15 19 11"	  capacity => 32
-	A.delFront(); A.delFront();
-	// A => "1 0 1 2 3 4 5 6 7 8 9 10 15 19 11"	  capacity => 32
 	fp << "Search is " << A.linearSearch(400) << endl;
 	fp << "Search is " << A.linearSearch(4000) << endl;
 	fp << "Search is " << A.binSearch(40000) << endl;
@@ -256,9 +210,3 @@ void test6(ostream &fp){
 }
 
 
-	foo(A);
-	for (int i=0; i< A.length();i++) cout << A[i] << " ";  cout << endl;
-	// A => "1 0 1 2 3 4 5 6 7 8 9 10 15 19 11"
-	for (int i=0; i< B.length();i++) cout << B[i] << " ";  cout << endl;
-	// B => "0 1 2 3 4 5 6 7 8 9"
-}
